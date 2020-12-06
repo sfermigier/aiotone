@@ -42,7 +42,11 @@ from .midi import (
 )
 from .notes import note_to_freq
 
-from .fm import calculate_panning, saturate
+try:
+    from .fm import calculate_panning, saturate
+except ModuleNotFoundError:
+    # workaround for Nuitka 0.6.9, https://github.com/Nuitka/Nuitka/issues/870
+    from fm import calculate_panning, saturate
 
 
 # We want this to be symmetrical on the + and the - side.
@@ -420,11 +424,11 @@ class PhaseModulator:
         self.op3 = Operator(
             wave=self.wave3,
             sample_rate=self.sample_rate,
-            a=24,
-            d=int(self.sample_rate / 12),
+            a=48,
+            d=int(self.sample_rate / 9),
             s=0.0,
-            r=int(self.sample_rate / 12),
-            volume=0.56 * 0.25,
+            r=int(self.sample_rate / 9),
+            volume=0.56 * 0.4,
         )
         self.last_pitch_played = 0.0
 

@@ -44,6 +44,8 @@ def build():
     for output in cmd.get_outputs():
         relative_extension = os.path.relpath(output, cmd.build_lib)
         shutil.copyfile(output, relative_extension)
+        if relative_extension.startswith("aiotone/"):
+            shutil.copyfile(output, relative_extension[len("aiotone/") :])
         mode = os.stat(relative_extension).st_mode
         mode |= (mode & 0o444) >> 2
         os.chmod(relative_extension, mode)
